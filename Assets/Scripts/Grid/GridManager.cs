@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using Pathfinding;
 
-public class GridManager : MonoBehaviour 
+public class GridManager : MonoBehaviour
 {
     private List<NodeVisual> visuals;
 
-    [SerializeField] private int gridSizeX;
-    [SerializeField] private int gridSizeY;
+    [SerializeField]
+    private int gridSizeX;
+    [SerializeField]
+    private int gridSizeY;
 
-    [SerializeField] private float size = 1f;
+    [SerializeField]
+    private float size = 1f;
 
-    private readonly string pathLocation =  "NodeVisual";
+    private readonly string pathLocation = "NodeVisual";
 
     private static GridManager instance;
     public static GridManager Instance
@@ -19,7 +22,7 @@ public class GridManager : MonoBehaviour
         get { return instance; }
     }
 
-    private Grid grid;
+    private Grid2D grid;
 
     private List<Node> path;
 
@@ -52,7 +55,7 @@ public class GridManager : MonoBehaviour
     {
         visuals = new List<NodeVisual>(gridSizeX * gridSizeY);
 
-        grid = new Grid(gridSizeX, gridSizeY);
+        grid = new Grid2D(gridSizeX, gridSizeY);
 
         List<Node> gridNodes = grid.GetNodes();
 
@@ -82,7 +85,7 @@ public class GridManager : MonoBehaviour
     {
         return GetVisual(node.X, node.Y);
     }
-       
+
     private NodeVisual GetVisual(int x, int y)
     {
         return visuals[x + y * gridSizeX];
@@ -98,7 +101,7 @@ public class GridManager : MonoBehaviour
 
         return grid.GetNodeFromPosition(x, y);
     }
-        
+
     public Vector3 GetWorldPosition(Node node)
     {
         return new Vector3(node.X * size, 0f, node.Y * size);

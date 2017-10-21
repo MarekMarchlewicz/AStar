@@ -4,13 +4,13 @@ using System.Collections.Generic;
 namespace Pathfinding
 {
     [System.Serializable]
-    public class Grid
+    public class Grid2D
     {
         [SerializeField] private int sizeX;
         [SerializeField] private int sizeY;
         [SerializeField] private List<Node> nodes;
 
-        public Grid(int gridSizeX, int gridSizeY)
+        public Grid2D(int gridSizeX, int gridSizeY)
         {
             sizeX = gridSizeX;
             sizeY = gridSizeY;

@@ -5,7 +5,7 @@ namespace Pathfinding
 {
     public static class AStar 
     {
-        static public List<Node> FindPath(Node startNode, Node targetNode, Grid grid) 
+        static public List<Node> FindPath(Node startNode, Node targetNode, Grid2D grid) 
         {
             List<Node> openSet = new List<Node>();
             openSet.Add(startNode);
