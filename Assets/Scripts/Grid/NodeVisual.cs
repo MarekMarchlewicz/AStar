@@ -7,6 +7,7 @@ public class NodeVisual : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
     [SerializeField] private TextMesh fCost, gCost, hCost;
 
     private Node node;
+    private PathState state;
 
     private Material material;
 
@@ -14,23 +15,20 @@ public class NodeVisual : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
 
     private bool isMouseOver;
 
-    public void Initialize(Node nodeData)
+    public void Initialize(Node node)
     {
-        node = nodeData;
+        this.node = node;
+
+        this.state = node.State as PathState;
 
         material = GetComponent<MeshRenderer>().material;
 
         UpdateVisual();
     }
-
-    public Node GetData()
-    {
-        return node;
-    }
-
+    
     public void UpdateVisual()
     {
-        SetColor(Tiles.GetColor(node.TerrainType));
+        SetColor(Tiles.GetColor(state.TerrainType));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -59,11 +57,11 @@ public class NodeVisual : MonoBehaviour, IPointerDownHandler, IPointerEnterHandl
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            node.TerrainType = (TerrainType)(((int)node.TerrainType + 1) % (System.Enum.GetNames(typeof(TerrainType)).Length));
+            state.TerrainType = (TerrainType)(((int)(state).TerrainType + 1) % (System.Enum.GetNames(typeof(TerrainType)).Length));
 
-            node.Walkable = Tiles.IsWalkable(node.TerrainType);
+            state.Walkable = Tiles.IsWalkable(state.TerrainType);
 
-            SetColor(Tiles.GetColor(node.TerrainType));
+            SetColor(Tiles.GetColor(state.TerrainType));
         }
     }
 

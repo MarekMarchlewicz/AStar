@@ -10,6 +10,8 @@ namespace Pathfinding
         [SerializeField] private int sizeY;
         [SerializeField] private List<Node> nodes;
 
+        public static Grid2D Instance { get; private set; }
+
         public Grid2D(int gridSizeX, int gridSizeY)
         {
             sizeX = gridSizeX;
@@ -21,11 +23,14 @@ namespace Pathfinding
             {
                 for (int x = 0; x < sizeX; x++)
                 {
-                    Node newNode = new Node(x, y, TerrainType.Grass, true);
+                    PathState pathState = new PathState(x, y, TerrainType.Grass, true);
+                    Node newNode = new Node(pathState);
 
                     nodes.Add(newNode);
                 }
             }
+
+            Instance = this;
         }
 
         public List<Node> GetNodes()
@@ -33,7 +38,7 @@ namespace Pathfinding
             return nodes;
         }
 
-        public List<Node> GetConnections(Node node)
+        public List<Node> GetConnections(PathState pathState)
         {
             List<Node> connections = new List<Node>();
 
@@ -46,8 +51,8 @@ namespace Pathfinding
                 {
                     if (!( x == 0 && y == 0))
                     {
-                        xPosition = node.X + x;
-                        yPosition = node.Y + y;
+                        xPosition = pathState.X + x;
+                        yPosition = pathState.Y + y;
 
                         if (AssetWithinBorders(xPosition, yPosition))
                         {
@@ -60,7 +65,7 @@ namespace Pathfinding
             return connections;
         }
 
-        private bool AssetWithinBorders(int x, int y)
+        public bool AssetWithinBorders(int x, int y)
         {
             return x >= 0 && x < sizeX && y >= 0 && y < sizeY;
         }

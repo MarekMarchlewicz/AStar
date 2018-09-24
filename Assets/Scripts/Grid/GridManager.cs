@@ -78,12 +78,37 @@ public class GridManager : MonoBehaviour
 
     public List<Node> GetPath(Node start, Node target)
     {
-        return AStar.FindPath(start, target, grid);
+        List<Node> path = null;
+
+        AStar aStar = new AStar(start, target);
+        while(aStar.State != AStar.SearchState.Success)
+        {
+            AStar.SearchState searchState = aStar.Iterate();
+
+            if(searchState == AStar.SearchState.Failure)
+            {
+                Debug.LogError("Cannot find path!");
+                break;
+            }
+            else if(searchState == AStar.SearchState.OutOfMemory)
+            {
+                Debug.LogError("Out of memory!");
+                break;
+            }
+        }
+
+        if(aStar.State == AStar.SearchState.Success)
+        {
+            path = aStar.Retrace();
+        }
+
+        return path;
     }
 
     public NodeVisual GetVisual(Node node)
     {
-        return GetVisual(node.X, node.Y);
+        PathState state = node.State as PathState;
+        return GetVisual(state.X, state.Y);
     }
 
     private NodeVisual GetVisual(int x, int y)
@@ -104,6 +129,9 @@ public class GridManager : MonoBehaviour
 
     public Vector3 GetWorldPosition(Node node)
     {
-        return new Vector3(node.X * size, 0f, node.Y * size);
+        PathState state = node.State as PathState;
+
+        return new Vector3(state.X * size, 0f, state.Y * size);
     }
 }
+
